@@ -1,0 +1,33 @@
+import telebot
+from telebot import types
+
+bot = telebot.TeleBot('Token')
+
+@bot.message_handler(commands=['start'])
+def handle_start(message):
+  # Создание клавиатуры
+  keyboard = types.ReplyKeyboardMarkup(row_width=2)
+  stone = types.KeyboardButton('Камень')
+  scissors = types.KeyboardButton('Ножницы')
+  paper = types.KeyboardButton('Бумага')
+  keyboard.add(stone, scissors, paper)
+
+  # Отправка сообщения с клавиатурой
+  bot.reply_to(message, 'Привет! Я бот.', reply_markup=keyboard)
+
+@bot.message_handler(func=lambda message: True)
+def handle_message(message):
+  if message.text == 'Камень':
+      # Действия при нажатии на кнопку 1
+      bot.reply_to(message, 'Бумага')
+  elif message.text == 'Ножницы':
+      # Действия при нажатии на кнопку 2
+      bot.reply_to(message, 'Камень')
+  elif message.text == 'Бумага':
+      # Действия при нажатии на кнопку 3
+      bot.reply_to(message, 'Ножницы')
+  else:
+      # Действия при получении другого сообщения
+      bot.reply_to(message, 'Получено сообщение: ' + message.text)
+
+bot.polling()
